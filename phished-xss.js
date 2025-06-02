@@ -17,6 +17,5 @@
       });
     }
   } catch (e) {
-    // Optional: silent fail or log
   }
 })();
