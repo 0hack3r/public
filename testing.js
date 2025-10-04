@@ -1,7 +1,7 @@
 // Example fetch using a token provided by the server in a meta tag
 const csrf_token = document.cookie ? decodeURIComponent(document.cookie.replace(/^XSRF-TOKEN=/, '')) : null;
 
-fetch('/mmp/private/shop/setting/user/1340', {
+fetch('https://yeswehackmirakl-dev.mirakl.net/mmp/private/shop/setting/user/1340', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
