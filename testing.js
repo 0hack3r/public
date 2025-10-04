@@ -1,11 +1,11 @@
 // Example fetch using a token provided by the server in a meta tag
-const token = document.cookie;
+const csrf_token = document.cookie ? decodeURIComponent(document.cookie.replace(/^XSRF-TOKEN=/, '')) : null;
 
 fetch('/mmp/private/shop/setting/user/1340', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Xsrf-Token': token,
+    'X-Xsrf-Token': csrf_token,
     'X-Requested-With': 'XMLHttpRequest'
   },
   credentials: 'include', // if you need to include cookies for same-origin requests
