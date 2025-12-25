@@ -1,1 +1,324 @@
-{"id":"test"}
+{
+  "meta": {
+    "meta": {
+      "pk": "id",
+      "type": "pipeline-revision<img src=x onerror=confirm(origin)>",
+      "links": {
+        "self": {
+          "list": "/v3/pipeline/{pipeline_id}/revision",
+          "detail": "/v3/pipeline/{pipeline_id}/revision/{revision_id}"
+        },
+        "related": {
+          "pipeline": {
+            "list": "/v3/pipeline",
+            "detail": "/v3/pipeline/{pipeline_id}"
+          },
+          "source": {
+            "list": null,
+            "detail": "/v3/pipeline/{pipeline_id}/source/{source_id}"
+          },
+          "transform": {
+            "list": null,
+            "detail": "/v3/pipeline/{pipeline_id}/transform/{transform_id}"
+          },
+          "sink": {
+            "list": null,
+            "detail": "/v3/pipeline/{pipeline_id}/sink/{sink_id}"
+          }
+        }
+      },
+      "page": null
+    }
+  },
+  "data": {
+    "id": "8a13b6c0-e176-11f0-9c06-cec6edd0b900",
+    "account_id": "82d52e48-e176-11f0-8c69-cec6edd0b900",
+    "pipeline_id": "89fb25ec-e176-11f0-9c06-cec6edd0b900",
+    "revision": {
+      "id": "89fb25ec-e176-11f0-9c06-cec6edd0b900",
+      "sinks": [
+        {
+          "id": "89fd969c-e176-11f0-9c06-cec6edd0b900",
+          "title": "Drop all data, Add Destinations by Editing This Pipeline<img src=x onerror=confirm(origin)>",
+          "description": null,
+          "account_id": "82d52e48-e176-11f0-8c69-cec6edd0b900",
+          "pipeline_id": "89fb25ec-e176-11f0-9c06-cec6edd0b900",
+          "generation_id": 0,
+          "type": "blackhole",
+          "deploy_type": "saas",
+          "user_config": {
+            "ack_enabled": true
+          },
+          "inputs": [
+            "89fd4322-e176-11f0-9c06-cec6edd0b900._unmatched"
+          ]
+        },
+        {
+          "id": "89fde71e-e176-11f0-9c06-cec6edd0b900",
+          "title": "Log Analysis Destination<img src=x onerror=confirm(origin)>",
+          "description": "Data that will end up in Log Analysis for searching, views, and boards<img src=x onerror=confirm(origin)>",
+          "account_id": "82d52e48-e176-11f0-8c69-cec6edd0b900",
+          "pipeline_id": "89fb25ec-e176-11f0-9c06-cec6edd0b900",
+          "generation_id": 0,
+          "type": "mezmo",
+          "deploy_type": "saas",
+          "user_config": {
+            "query": {
+              "tags": [
+                "{{metadata.query.tags}}"
+              ],
+              "hostname": "{{7*7}}"
+            },
+            "message": {
+              "scheme": "Message pass-through<img src=x onerror=confirm(origin)>"
+            },
+            "ack_enabled": true,
+            "use_ingestion_key": false
+          },
+          "inputs": [
+            "89fc7ef6-e176-11f0-9c06-cec6edd0b900.05f487af",
+            "89fd4322-e176-11f0-9c06-cec6edd0b900.016191d9",
+            "89fd4322-e176-11f0-9c06-cec6edd0b900.ebcb6e34"
+          ]
+        }
+      ],
+      "title": "Log Analysis Source Data",
+      "alerts": [],
+      "config": {},
+      "sources": [
+        {
+          "id": "89fc05fc-e176-11f0-9c06-cec6edd0b900",
+          "title": "Log Analysis Source Data",
+          "description": "This datastream is your current data sent to our Log Analysis endpoints.",
+          "account_id": "82d52e48-e176-11f0-8c69-cec6edd0b900",
+          "pipeline_id": "89fb25ec-e176-11f0-9c06-cec6edd0b900",
+          "generation_id": 0,
+          "type": "log-analysis-ingestion",
+          "deploy_type": "saas",
+          "user_config": {},
+          "outputs": [
+            {
+              "id": "89fc05fc-e176-11f0-9c06-cec6edd0b900",
+              "label": "Default"
+            }
+          ]
+        }
+      ],
+      "account_id": "82d52e48-e176-11f0-8c69-cec6edd0b900",
+      "transforms": [
+        {
+          "id": "89fc7ef6-e176-11f0-9c06-cec6edd0b900",
+          "title": "Route k8s enrichment separately",
+          "description": "",
+          "account_id": "82d52e48-e176-11f0-8c69-cec6edd0b900",
+          "pipeline_id": "89fb25ec-e176-11f0-9c06-cec6edd0b900",
+          "generation_id": 0,
+          "type": "route",
+          "deploy_type": "saas",
+          "user_config": {
+            "conditionals": [
+              {
+                "label": "find metrics",
+                "conditional": {
+                  "expressions": [
+                    {
+                      "field": ".file",
+                      "value": "",
+                      "str_operator": "exists"
+                    },
+                    {
+                      "field": ".file",
+                      "value": "logdna-reporter",
+                      "str_operator": "contains"
+                    }
+                  ],
+                  "logical_operation": "AND"
+                },
+                "_output_name": "05f487af"
+              },
+              {
+                "label": "remove .app if .file exists",
+                "conditional": {
+                  "expressions": [
+                    {
+                      "field": ".app",
+                      "value": "",
+                      "str_operator": "exists"
+                    },
+                    {
+                      "field": ".file",
+                      "value": "",
+                      "str_operator": "exists"
+                    },
+                    {
+                      "field": ".file",
+                      "value": "logdna-reporter",
+                      "negate": true,
+                      "str_operator": "contains"
+                    },
+                    {
+                      "field": ".file",
+                      "value": "/",
+                      "str_operator": "starts_with"
+                    }
+                  ],
+                  "logical_operation": "AND"
+                },
+                "_output_name": "a92407b3"
+              }
+            ]
+          },
+          "inputs": [
+            "89fc05fc-e176-11f0-9c06-cec6edd0b900"
+          ],
+          "outputs": [
+            {
+              "id": "89fc7ef6-e176-11f0-9c06-cec6edd0b900._unmatched",
+              "label": "Unmatched"
+            },
+            {
+              "id": "89fc7ef6-e176-11f0-9c06-cec6edd0b900.05f487af",
+              "label": "find metrics"
+            },
+            {
+              "id": "89fc7ef6-e176-11f0-9c06-cec6edd0b900.a92407b3",
+              "label": "remove .app if .file exists"
+            }
+          ]
+        },
+        {
+          "id": "89fcdff4-e176-11f0-9c06-cec6edd0b900",
+          "title": "Drop the app field for k8s enrichment",
+          "description": "",
+          "account_id": "82d52e48-e176-11f0-8c69-cec6edd0b900",
+          "pipeline_id": "89fb25ec-e176-11f0-9c06-cec6edd0b900",
+          "generation_id": 0,
+          "type": "drop-fields",
+          "deploy_type": "saas",
+          "user_config": {
+            "fields": [
+              ".app"
+            ]
+          },
+          "inputs": [
+            "89fc7ef6-e176-11f0-9c06-cec6edd0b900.a92407b3"
+          ],
+          "outputs": [
+            {
+              "id": "89fcdff4-e176-11f0-9c06-cec6edd0b900",
+              "label": "Default"
+            }
+          ]
+        },
+        {
+          "id": "89fd4322-e176-11f0-9c06-cec6edd0b900",
+          "title": "catch bad .line property",
+          "description": "",
+          "account_id": "82d52e48-e176-11f0-8c69-cec6edd0b900",
+          "pipeline_id": "89fb25ec-e176-11f0-9c06-cec6edd0b900",
+          "generation_id": 0,
+          "type": "route",
+          "deploy_type": "saas",
+          "user_config": {
+            "conditionals": [
+              {
+                "label": ".line exists and is supported",
+                "conditional": {
+                  "expressions": [
+                    {
+                      "field": ".line",
+                      "value": "",
+                      "str_operator": "exists"
+                    },
+                    {
+                      "field": ".line",
+                      "value": "",
+                      "negate": true,
+                      "str_operator": "is_empty"
+                    },
+                    {
+                      "expressions": [
+                        {
+                          "field": ".line",
+                          "value": "",
+                          "str_operator": "is_object"
+                        },
+                        {
+                          "field": ".line",
+                          "value": "",
+                          "str_operator": "is_string"
+                        }
+                      ],
+                      "logical_operation": "OR"
+                    }
+                  ],
+                  "logical_operation": "AND"
+                },
+                "_output_name": "016191d9"
+              },
+              {
+                "label": ".l exists and is supported",
+                "conditional": {
+                  "expressions": [
+                    {
+                      "field": ".l",
+                      "value": "",
+                      "str_operator": "exists"
+                    },
+                    {
+                      "field": ".l",
+                      "value": "",
+                      "negate": true,
+                      "str_operator": "is_empty"
+                    },
+                    {
+                      "expressions": [
+                        {
+                          "field": ".l",
+                          "value": "",
+                          "str_operator": "is_object"
+                        },
+                        {
+                          "field": ".l",
+                          "value": "",
+                          "str_operator": "is_string"
+                        }
+                      ],
+                      "logical_operation": "OR"
+                    }
+                  ],
+                  "logical_operation": "AND"
+                },
+                "_output_name": "ebcb6e34"
+              }
+            ]
+          },
+          "inputs": [
+            "89fc7ef6-e176-11f0-9c06-cec6edd0b900._unmatched",
+            "89fcdff4-e176-11f0-9c06-cec6edd0b900"
+          ],
+          "outputs": [
+            {
+              "id": "89fd4322-e176-11f0-9c06-cec6edd0b900._unmatched",
+              "label": "Unmatched"
+            },
+            {
+              "id": "89fd4322-e176-11f0-9c06-cec6edd0b900.016191d9",
+              "label": ".line exists and is supported"
+            },
+            {
+              "id": "89fd4322-e176-11f0-9c06-cec6edd0b900.ebcb6e34",
+              "label": ".l exists and is supported"
+            }
+          ]
+        }
+      ],
+      "deploy_type": "saas",
+      "partition_id": "gen17",
+      "transform_groups": []
+    },
+    "created_at": "2025-12-25T09:46:08.580Z",
+    "minimum_vector_version": null,
+    "toml_version": 1
+  }
+}
